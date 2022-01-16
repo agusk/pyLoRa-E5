@@ -81,7 +81,7 @@ elif auth_method == 'abp':
     print('Configuring apb')
     set_confirm('AT+ID=DevAddr,%s' % config.get('abp', 'devaddr'))
     set_confirm('AT+KEY=NWKSKEY,%s' % config.get('abp', 'nwkskey'))
-    set_confrim('AT+KEY=APPSKEY,%s' % config.get('abp', 'appskey'))
+    set_confirm('AT+KEY=APPSKEY,%s' % config.get('abp', 'appskey'))
 else:
     raise Exception('Invaoid auth method %s' % auth_method)
 
@@ -120,17 +120,17 @@ for config_entry in config_channels:
         config_dcycle = int(config_fields[4])
         set_confirm('mac set ch dcycle %d %d' % (ch_id, config_dcycle))
 
-    # US SKU has 72 fixed freq channels
-    # EU version has only 16 channels, but freq is user configurable on ch 3-15
-    if sku == "RN2903":
-        if config_freq != ch_freq:
-            raise Exception("Frequency %s for channel %s is does not match device." % (config_freq, ch_id))
-    else:
-        if ch_id < 3:
-            if config_freq != ch_freq:
-                raise Exception("Frequency %s for channel %s is does not match device." % (config_freq, ch_id))
-        else:
-            set_confirm('mac set ch freq %d %s' % (ch_id, config_freq))
+    # # US SKU has 72 fixed freq channels
+    # # EU version has only 16 channels, but freq is user configurable on ch 3-15
+    # if sku == "RN2903":
+    #     if config_freq != ch_freq:
+    #         raise Exception("Frequency %s for channel %s is does not match device." % (config_freq, ch_id))
+    # else:
+    #     if ch_id < 3:
+    #         if config_freq != ch_freq:
+    #             raise Exception("Frequency %s for channel %s is does not match device." % (config_freq, ch_id))
+    #     else:
+    #         set_confirm('mac set ch freq %d %s' % (ch_id, config_freq))
 
     config_status = config_fields[1].replace('"', '').strip()
     set_confirm('mac set ch status %d %s' % (ch_id, config_status))
